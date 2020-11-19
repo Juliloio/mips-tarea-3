@@ -68,44 +68,22 @@ Los _opcodes_ y códigos de función de las instrucciones pueden encontrarse por
 |Hex     |Tipo|_op_  |_rs_ |_rt_ |_rd_ |_shamt_|_funct_|_imm_           |Comentarios|
 |--------|----|------|-----|-----|-----|-------|-------|----------------|---|
 |34020004|I   |001101|00000|00010|NA   |NA     |NA     |0000000000000100|\#1|
-|3c041001|I   |001111|00000|00100|NA   |NA     |NA     |0001000000000001|\#2|
-|0000000c|R   |000000|00000|00000|00000|00000  |001100 |NA              |\#3|
-|3c011001|I   |001111|00000|00001|NA   |NA     |NA     |0001000000000001|\#4|
-|34280010|I   |001101|00001|01000|NA   |NA     |NA     |0001000000000001|\#5|
-|8d0d0000|I   |100011|01000|01101|NA   |NA     |NA     |0000000000000000|\#6|
-|8d0e0004|I   |100011|01000|01110|NA   |NA     |NA     |0000000000000100|\#6|
-|01ae9020|R   |000000|01101|01110|10010|00000  |100000 |NA              |\#7|
-|22520005|I   |001000|10010|10010|NA   |NA     |NA     |0000000000000101|\#8|
-|00122021|R   |000000|00000|10010|00100|00000  |100001 |NA              |\#9|
-|34020001|I   |001101|00000|00010|NA   |NA     |NA     |0000000000000001|\#10|
-|0000000c|R   |000000|00000|00000|00000|00000  |001100 |NA              |\#11|
-|3402000a|I   |001101|00000|00010|NA   |NA     |NA     |0000000000001010|\#12|
-|0000000c|R   |000000|00000|00000|00000|00000  |001100 |NA              |\#13|
+|3c041001|I   |001111|00000|00100|NA   |NA     |NA     |0001000000000001|   |
+|0000000c|R   |000000|00000|00000|00000|00000  |001100 |NA              |   |
+|3c011001|I   |001111|00000|00001|NA   |NA     |NA     |0001000000000001|   |
+|34280010|I   |001101|00001|01000|NA   |NA     |NA     |0001000000000001|   |
+|8d0d0000|I   |100011|01000|01101|NA   |NA     |NA     |0000000000000000|   |
+|8d0e0004|I   |100011|01000|01110|NA   |NA     |NA     |0000000000000100|   |
+|01ae9020|R   |000000|01101|01110|10010|00000  |100000 |NA              |   |
+|22520005|I   |001000|10010|10010|NA   |NA     |NA     |0000000000000101|   |
+|00122021|R   |000000|00000|10010|00100|00000  |100001 |NA              |   |
+|34020001|I   |001101|00000|00010|NA   |NA     |NA     |0000000000000001|   |
+|0000000c|R   |000000|00000|00000|00000|00000  |001100 |NA              |   |
+|3402000a|I   |001101|00000|00010|NA   |NA     |NA     |0000000000001010|   |
+|0000000c|R   |000000|00000|00000|00000|00000  |001100 |NA              |   |
 
 ### Comentarios
 
 1. `ori $v0, $zero, 4` reemplaza a `li $v0, 4` que es una pseudoinstrucción. En las instrucciones de tipo I el registro de destino es `rt` en vez de `rd`. Los campos que no se usan dicen "NA" por "no aplica".
 
-2. lui $4, 4097 [hello] reemplaza a la pseudoinstrucción la $a0, hello. Cargamos como constante la dirección de hello (0x1001 en hex y 1001 en dec) como el immediate.
 
-3. syscall es una instrucción de formato R (por lo tanto, su opcode es 0) pero no utiliza registros explícitamente, sí la ensamblan a la dirección 0x0000000c.
-
-4. lui $1, 4097 [numbers] guarda en el registro $at la posición de hello en la memoria. 
-
-5. ori $8, $1, 16 [numbers] hace que nos paremos en la dirección que contiene numbers y guarda en $t0. Son instrucciones de tipo I ya que utilizan constantes para ubicar las etiquetas en la memoria.
-
-6. lw $13, 0($8) y lw $14, 4($8) guardan en los registros $t5 y $t6 (cumplen la funcion de RT) respectivamente la primera palabra de memoria en $t0 y la segunda palabra de memoria en $t0 (cumplen la funcion de RS), mientras que los offset son las constantes.
-
-7. add $18, $13, $14 es una instrucción de tipo R porque suma los contenidos de los registros $t5 y $t6 y lo guardan en $s2. Por lo tanto, utiliza los tres registros. 
-
-8. addi $18, $18, 5 es una instrucción de tipo I porque le suma la constante 5 a lo que hay en el registro $s2 (cumple la funcion de RS y RT a la vez) y guarda el resultado en el mismo.
-
-9. addu $4, $0, $18 es una instrucción de tipo R ya que utiliza registros y no constantes. En este caso, guarda en $a0 (RD) la suma de $zero y $s2 (RS y RT).
-
-10. ori $2, $0, 1 es una instruccion de tipo I, cuya pseudo-instrucción se denomina li, que en este caso carga en $v0 un 1. Utiliza los tres registros. 
-
-11. Al igual que el comentario #3.
-
-12. ori $2, $0, 10 cumple la misma función solo que carga un 10 al registro $v0 (RS). En esos casos, los operandos son zero (RS) y 1 (constante)
-
-13. Al igual que el comentario #3. 
